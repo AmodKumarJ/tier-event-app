@@ -2,10 +2,15 @@ import type { NextConfig } from "next";
 
 
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
+  eslint: { ignoreDuringBuilds: true },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
   },
 };
 
-
-export default nextConfig;
+module.exports = nextConfig;

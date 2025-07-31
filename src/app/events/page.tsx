@@ -3,6 +3,15 @@ import { supabase } from "@/lib/supabase";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
+interface Event {
+  id: number;
+  title: string;
+  description: string;
+  event_date: string;
+  image_url: string;
+  tier: "free" | "silver" | "gold" | "platinum";
+}
+
 export default async function EventsPage() {
   const user = await currentUser();
   const userTier = (user?.publicMetadata?.tier as string) || "free";
@@ -12,8 +21,8 @@ export default async function EventsPage() {
   const allowedTiers = tierLevels.slice(0, tierLevels.indexOf(userTier) + 1);
 
   // Fetch events
-  let events = [];
-  let errorMsg = null;
+  let events: Event[] = [];
+  let errorMsg: string | null = null;
   try {
     const { data, error } = await supabase
       .from("events")
@@ -21,9 +30,9 @@ export default async function EventsPage() {
       .order("event_date", { ascending: true });
 
     if (error) throw error;
-    events = data || [];
-  } catch (err: any) {
-    errorMsg = err.message || "Failed to load events";
+    events = (data as Event[]) || [];
+  } catch (err: unknown) {
+    errorMsg = err instanceof Error ? err.message : "Failed to load events";
   }
 
   if (errorMsg) {
@@ -34,11 +43,9 @@ export default async function EventsPage() {
     return <div className="p-4 text-gray-500">No events available.</div>;
   }
 
-  
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-6">Events for {userTier} Tier</h1>
-
       <UpgradeButtons />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
