@@ -1,13 +1,9 @@
-import { SignUp } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 
-interface PageProps {
-  searchParams: { redirect_url?: string };
-}
-
-export default function Page({ searchParams }: PageProps) {
+export default function Page({ searchParams }: any) {
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <SignUp redirectUrl={searchParams?.redirect_url || "/events"} />
+      <SignIn redirectUrl={searchParams?.redirect_url || "/events"} />
     </div>
   );
 }
