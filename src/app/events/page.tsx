@@ -1,6 +1,7 @@
 import UpgradeButtons from "@/components/UpgradeButtons";
 import { supabase } from "@/lib/supabase";
 import { currentUser } from "@clerk/nextjs/server";
+import Image from "next/image";
 
 export default async function EventsPage() {
   const user = await currentUser();
@@ -50,9 +51,11 @@ export default async function EventsPage() {
                 isLocked ? "bg-gray-100 opacity-70" : "bg-white"
               }`}
             >
-              <img
+              <Image
                 src={event.image_url}
                 alt={event.title}
+                width={400}
+                height={200}
                 className="w-full h-40 object-cover rounded-md mb-3"
               />
               <h2 className="text-xl font-semibold text-gray-800">
